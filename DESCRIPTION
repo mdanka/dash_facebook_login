@@ -1,0 +1,13 @@
+Package: dashFacebookLogin
+Title: A Facebook Login component for DPlotly Dash
+Version: 0.0.1
+Description: A Facebook Login component for DPlotly Dash
+Depends: R (>= 3.0.2)
+Imports: 
+Suggests: 
+License: MIT + file LICENSE
+URL: https://github.com/mdanka/dash-facebook-login
+BugReports: https://github.com/mdanka/dash-facebook-login/issues
+Encoding: UTF-8
+LazyData: true
+KeepSource: true

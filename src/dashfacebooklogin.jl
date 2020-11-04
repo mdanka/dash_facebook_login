@@ -1,0 +1,36 @@
+
+module DashFacebookLogin
+using Dash
+
+const resources_path = realpath(joinpath( @__DIR__, "..", "deps"))
+const version = "0.0.1"
+
+include("dashfacebooklogin.jl")
+
+function __init__()
+    DashBase.register_package(
+        DashBase.ResourcePkg(
+            "dash_facebook_login",
+            resources_path,
+            version = version,
+            [
+                DashBase.Resource(
+    relative_package_path = "dash_facebook_login.min.js",
+    external_url = nothing,
+    dynamic = nothing,
+    async = nothing,
+    type = :js
+),
+DashBase.Resource(
+    relative_package_path = "dash_facebook_login.min.js.map",
+    external_url = nothing,
+    dynamic = true,
+    async = nothing,
+    type = :js
+)
+            ]
+        )
+
+    )
+end
+end
