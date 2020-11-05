@@ -1,7 +1,7 @@
 Package: dashFacebookLogin
-Title: A Facebook Login component for DPlotly Dash
+Title: A Facebook Login component for Plotly Dash
 Version: 0.0.1
-Description: A Facebook Login component for DPlotly Dash
+Description: A Facebook Login component for Plotly Dash
 Depends: R (>= 3.0.2)
 Imports: 
 Suggests: 

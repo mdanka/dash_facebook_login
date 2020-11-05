@@ -1,7 +1,7 @@
 {
   "name": "dash_facebook_login",
   "version": "0.0.1",
-  "description": "A Facebook Login component for DPlotly Dash",
+  "description": "A Facebook Login component for Plotly Dash",
   "repository": {
     "type": "git",
     "url": "git://github.com/mdanka/dash-facebook-login.git"
@@ -24,7 +24,8 @@
   "author": "Miklos Danka <danka.miklos@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "react-facebook-login": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
