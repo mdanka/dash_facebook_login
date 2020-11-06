@@ -1,11 +1,21 @@
 # Dash Facebook Login
 
+Dash Facebook Login provides a Facebook login button for Plotly Dash dashboards.
+
+For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
+
+![Facebook login button](./images/screenshot-login.png)
+
+![Facebook logout button](./images/screenshot-logout.png)
+
+## Development
+
 Dash Facebook Login is a Dash component library.
 
 Get started with:
 1. Install Dash and its dependencies: https://dash.plotly.com/installation
 2. Run `python usage.py`
-3. Visit http://localhost:8050 in your web browser
+3. Visit https://localhost:8050 in your web browser
 
 ## Contributing
 
