@@ -25,6 +25,13 @@
         "returns": null
       },
       {
+        "name": "refreshLoginStatus",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
         "name": "onFacebookLoginResponse",
         "docblock": null,
         "modifiers": [],

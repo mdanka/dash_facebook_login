@@ -14,10 +14,14 @@ export default class DashFacebookLogin extends Component {
     }
 
     componentDidMount() {
+        console.debug("[DashFacebookLogin] componentDidMount");
         if (document.getElementById('facebook-jssdk')) {
+            console.debug("[DashFacebookLogin] facebook-jssdk already exists");
             this.setIsSdkLoaded();
+            this.refreshLoginStatus();
             return;
         }
+        console.debug("[DashFacebookLogin] facebook-jssdk doesn't yet exist");
         this.setFbAsyncInit();
         this.loadSdkAsynchronously();
         let fbRoot = document.getElementById('fb-root');
@@ -29,12 +33,14 @@ export default class DashFacebookLogin extends Component {
     }
 
     componentDidUpdate() {
+        console.debug("[DashFacebookLogin] componentDidUpdate");
         // We have to ask the Facebook SDK to rerender the button if
         // some properties changed
         window.FB.XFBML.parse();
     }
 
     componentWillUnmount() {
+        console.debug("[DashFacebookLogin] componentWillUnmount");
         if (this.authStatusChangeListener != null) {
             window.FB.Event.unsubscribe('auth.statusChange', this.authStatusChangeListener);
             this.authStatusChangeListener = null;
@@ -95,7 +101,17 @@ export default class DashFacebookLogin extends Component {
         })(document, 'script', 'facebook-jssdk');
     }
 
+    refreshLoginStatus() {
+        console.debug("[DashFacebookLogin] refreshLoginStatus");
+        const { setProps } = this.props;
+        const onFacebookLoginResponseLocal = this.onFacebookLoginResponse;
+        window.FB.getLoginStatus(function (response) {
+            onFacebookLoginResponseLocal(setProps, response);
+        })
+    }
+
     onFacebookLoginResponse(setProps, response) {
+        console.debug("[DashFacebookLogin] onFacebookLoginResponse");
         setProps({
             facebookLoginResponse: response,
         });
