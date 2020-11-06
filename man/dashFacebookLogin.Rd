@@ -6,7 +6,7 @@
 \title{DashFacebookLogin component}
 
 \description{
-DashFacebookLogin provides a Facebook login button. For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
+DashFacebookLogin provides a Facebook login button for Plotly Dash dashboards. For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
 }
 
 \usage{

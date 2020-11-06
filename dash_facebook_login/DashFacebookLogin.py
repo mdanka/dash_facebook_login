@@ -5,7 +5,7 @@ from dash.development.base_component import Component, _explicitize_args
 
 class DashFacebookLogin(Component):
     """A DashFacebookLogin component.
-DashFacebookLogin provides a Facebook login button.
+DashFacebookLogin provides a Facebook login button for Plotly Dash dashboards.
 For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
 
 Keyword arguments:

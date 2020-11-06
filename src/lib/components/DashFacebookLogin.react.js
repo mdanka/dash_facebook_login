@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * DashFacebookLogin provides a Facebook login button.
+ * DashFacebookLogin provides a Facebook login button for Plotly Dash dashboards.
  * For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
  */
 export default class DashFacebookLogin extends Component {

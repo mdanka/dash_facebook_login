@@ -1,6 +1,6 @@
 {
   "src/lib/components/DashFacebookLogin.react.js": {
-    "description": "DashFacebookLogin provides a Facebook login button.\nFor details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/",
+    "description": "DashFacebookLogin provides a Facebook login button for Plotly Dash dashboards.\nFor details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/",
     "displayName": "DashFacebookLogin",
     "methods": [
       {
