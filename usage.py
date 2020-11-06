@@ -10,7 +10,6 @@ app.layout = html.Div([
         id='facebook-login',
         appId='168590974451254',
         version="v8.0",
-        language="hu_HU",
         cookie=True,
         status=True,
         autoLogoutLink=True,
