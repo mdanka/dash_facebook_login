@@ -32,11 +32,19 @@ export default class DashFacebookLogin extends Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(_prevProps, prevState) {
         console.debug("[DashFacebookLogin] componentDidUpdate");
-        // We have to ask the Facebook SDK to rerender the button if
-        // some properties changed
-        window.FB.XFBML.parse();
+        if (!prevState.isSdkLoaded && this.state.isSdkLoaded) {
+            console.debug("[DashFacebookLogin] The SDK has just loaded");
+            if (!this.props.status) {
+                // The status is not automatically loaded, so we have to load it
+                this.refreshLoginStatus();
+            }
+            // We have to ask the Facebook SDK to rerender the button if
+            // some properties changed
+            window.FB.XFBML.parse();
+        }
+        
     }
 
     componentWillUnmount() {
@@ -49,9 +57,11 @@ export default class DashFacebookLogin extends Component {
             window.FB.Event.unsubscribe('auth.authResponseChange', this.authResponseChangeSubscription);
             this.authResponseChangeSubscription = null;
         }
+        console.debug("[DashFacebookLogin] Unsubscribed change listeners");
     }
 
     setIsSdkLoaded() {
+        console.debug("[DashFacebookLogin] setIsSdkLoaded");
         const { setProps } = this.props;
         this.setState({ isSdkLoaded: true });
         const onFacebookLoginResponseLocal = this.onFacebookLoginResponse;
@@ -63,6 +73,7 @@ export default class DashFacebookLogin extends Component {
         };
         window.FB.Event.subscribe('auth.statusChange', this.authStatusChangeSubscription);
         window.FB.Event.subscribe('auth.authResponseChange', this.authResponseChangeSubscription);
+        console.debug("[DashFacebookLogin] Subscribed change listeners");
     }
 
     setFbAsyncInit() {
