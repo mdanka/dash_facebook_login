@@ -9,10 +9,15 @@ app.layout = html.Div([
     dash_facebook_login.DashFacebookLogin(
         id='facebook-login',
         appId='168590974451254',
-        autoLoad=True,
-        fields="name,email,picture",
-        size="small",
-        version="8.0",
+        version="v8.0",
+        language="hu_HU",
+        cookie=True,
+        status=True,
+        autoLogoutLink=True,
+        scope="public_profile",
+        size="medium",
+        buttonType="login_with",
+        useContinueAs=True,
     ),
     html.Div(id='output')
 ])

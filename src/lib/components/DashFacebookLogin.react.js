@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import FacebookLogin from 'react-facebook-login';
 
 /**
- * DashFacebookLogin is a wrapper around the react-facebook-login component.
- * For details on its configuration, see https://www.npmjs.com/package/react-facebook-login
+ * DashFacebookLogin provides a Facebook login button.
+ * For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
  */
 export default class DashFacebookLogin extends Component {
     constructor(props) {
@@ -29,122 +28,131 @@ export default class DashFacebookLogin extends Component {
         }
     }
 
+    componentDidUpdate() {
+        // We have to ask the Facebook SDK to rerender the button if
+        // some properties changed
+        window.FB.XFBML.parse();
+    }
+
+    componentWillUnmount() {
+        if (this.authStatusChangeListener != null) {
+            window.FB.Event.unsubscribe('auth.statusChange', this.authStatusChangeListener);
+            this.authStatusChangeListener = null;
+        }
+        if (this.authResponseChangeSubscription != null) {
+            window.FB.Event.unsubscribe('auth.authResponseChange', this.authResponseChangeSubscription);
+            this.authResponseChangeSubscription = null;
+        }
+    }
+
     setIsSdkLoaded() {
+        const { setProps } = this.props;
         this.setState({ isSdkLoaded: true });
+        const onFacebookLoginResponseLocal = this.onFacebookLoginResponse;
+        this.authStatusChangeSubscription = function (response) {
+            onFacebookLoginResponseLocal(setProps, response);
+        };
+        this.authResponseChangeSubscription = function (response) {
+            onFacebookLoginResponseLocal(setProps, response);
+        };
+        window.FB.Event.subscribe('auth.statusChange', this.authStatusChangeSubscription);
+        window.FB.Event.subscribe('auth.authResponseChange', this.authResponseChangeSubscription);
     }
 
     setFbAsyncInit() {
-        const { appId, xfbml, cookie, version, autoLoad } = this.props;
+        const {
+            appId,
+            version,
+            cookie,
+            status,
+            xfbml,
+            frictionlessRequests,
+            setProps,
+        } = this.props;
         window.fbAsyncInit = () => {
             window.FB.init({
-                version: `v${version}`,
                 appId,
-                xfbml: true,
-                autoLogAppEvents: true,
-                // cookie,
+                version,
+                cookie,
+                status,
+                xfbml,
+                frictionlessRequests,
             });
-          this.setIsSdkLoaded();
+            this.setIsSdkLoaded();
         };
     }
 
     loadSdkAsynchronously() {
+        const { language } = this.props;
         ((d, s, id) => {
             const element = d.getElementsByTagName(s)[0];
             const fjs = element;
             let js = element;
             if (d.getElementById(id)) { return; }
             js = d.createElement(s); js.id = id;
-            js.src = `https://connect.facebook.net/en_US/sdk.js`;
+            js.src = `https://connect.facebook.net/${language}/sdk.js`;
             fjs.parentNode.insertBefore(js, fjs);
         })(document, 'script', 'facebook-jssdk');
-      }
+    }
+
+    onFacebookLoginResponse(setProps, response) {
+        setProps({
+            facebookLoginResponse: response,
+        });
+    }
 
     render() {
         const {
             id,
-            setProps,
-            appId,
-            size,
+            autoLogoutLink,
             scope,
-            fields,
-            returnScopes,
-            autoLoad,
-            xfbml,
-            cookie,
-            textButton,
-            cssClass,
-            redirectUri,
-            version,
-            icon,
-            language,
-            isMobile,
-            isDisabled,
-            tag,
-            state,
-            authType,
-            responseType,
+            size,
+            defaultAudience,
+            layout,
+            buttonType,
+            useContinueAs,
+            className,
         } = this.props;
+        return (<div
+            id={id}
+            className={className}
+            data-auto-logout-link={autoLogoutLink}
+            data-scope={scope}
+            data-size={size}
+            data-default-audience={defaultAudience}
 
-        const responseFacebook = (response) => {
-            console.log(response);
-             /*
-                * Send the new value to the parent component.
-                * setProps is a prop that is automatically supplied
-                * by dash's front-end ("dash-renderer").
-                * In a Dash app, this will update the component's
-                * props and send the data back to the Python Dash
-                * app server if a callback uses the modified prop as
-                * Input or State.
-                */
-            // e => setProps({ value: e.target.value })
-            setProps({
-                facebookLoginResponse: response,
-            });
-        }
-
-        const componentClicked = (response) => {
-            // console.log(response);
-        }
-
-        return (
-            <div id={id}>
-                {false && <FacebookLogin
-                    appId={appId}
-                    size={size}
-                    scope={scope}
-                    fields={fields}
-                    returnScopes={returnScopes}
-                    autoLoad={autoLoad}
-                    xfbml={xfbml}
-                    cookie={cookie}
-                    textButton={textButton}
-                    cssClass={cssClass}
-                    redirectUri={redirectUri}
-                    version={version}
-                    icon={icon}
-                    language={language}
-                    isMobile={isMobile}
-                    isDisabled={isDisabled}
-                    tag={tag}
-                    state={state}
-                    authType={authType}
-                    responseType={responseType}
-
-                    onClick={componentClicked}
-                    callback={responseFacebook}
-                />}
-                {!this.state.isSdkLoaded && "loading..."}
-                {this.state.isSdkLoaded && (
-                    <div className="fb-login-button" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="false" data-width=""></div>
-                )}
-            </div>
-        );
+            data-button-type={buttonType}
+            data-layout={layout}
+            
+            data-use-continue-as={useContinueAs}
+            data-width=""
+        ></div>);
     }
 }
 
-DashFacebookLogin.defaultProps = {};
+DashFacebookLogin.defaultProps = {
+    language: "en_US",
+    version: "v8.0",
+    cookie: false,
+    status: false,
+    xfbml: false,
+    frictionlessRequests: false,
+
+    autoLogoutLink: false,
+    scope: "public_profile",
+    size: "small",
+    defaultAudience: "friends",
+    layout: "default",
+    buttonType: "continue_with",
+    useContinueAs: false,
+
+    className: "fb-login-button",
+};
 
 DashFacebookLogin.propTypes = {
+    ///////////////
+    // Dash options
+    ///////////////
     /**
      * The ID used to identify this component in Dash callbacks.
      */
@@ -156,40 +164,122 @@ DashFacebookLogin.propTypes = {
      */
     setProps: PropTypes.func,
 
+
+
+    ///////////////////
+    // Facebook options
+    ///////////////////
     /**
-     * The Facebook App ID.
+     * Your Facebook application ID. If you don't have one find it in the App dashboard
+     * or go there to create a new app.
      */
     appId: PropTypes.string.isRequired,
 
-    size: PropTypes.oneOf(["small", "medium", "metro"]),
-    scope: PropTypes.string,
-    fields: PropTypes.string,
-    returnScopes: PropTypes.bool,
-    autoLoad: PropTypes.bool,
-    xfbml: PropTypes.bool,
-    cookie: PropTypes.bool,
-    textButton: PropTypes.string,
-    cssClass: PropTypes.string,
-    redirectUri: PropTypes.string,
-    version: PropTypes.string,
-    icon: PropTypes.string,
+    /**
+     * The language code, such as "en_US".
+     * @default en_US
+     */
     language: PropTypes.string,
-    isMobile: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    tag: PropTypes.string,
-    state: PropTypes.string,
-    authType: PropTypes.string,
-    responseType: PropTypes.string,
 
     /**
-     * The properties returned by the Facebook login callback
+     * Determines which versions of the Graph API and any API dialogs or
+     * plugins are invoked when using the .api() and .ui() functions. Valid
+     * values are determined by currently available versions, such as 'v2.0'.
+     * @default v8.0
+     */
+    version: PropTypes.string,
+
+    /**
+     * Determines whether a cookie is created for the session or not. If enabled,
+     * it can be accessed by server-side code.
+     * @default false
+     */
+    cookie: PropTypes.bool,
+
+    /**
+     * Determines whether the current login status of the user is freshly retrieved
+     * on every page load. If this is disabled, that status will have to be manually
+     * retrieved using .getLoginStatus().
+     * @default false
+     */
+    status: PropTypes.bool,
+
+    /**
+     * Determines whether XFBML tags used by social plugins are parsed, and
+     * therefore whether the plugins are rendered or not.
+     * @default false
+     */
+    xfbml: PropTypes.bool,
+
+    /**
+     * Frictionless Requests are available to games on Facebook.com or on mobile
+     * web using the JavaScript SDK. This parameter determines whether they are
+     * enabled.
+     * @default false
+     */
+    frictionlessRequests: PropTypes.bool,
+
+
+
+    ///////////////////////
+    // Login button options
+    ///////////////////////
+    /**
+     * If enabled, the button will change to a logout button when the user is logged in.
+     * @default false
+     */
+    autoLogoutLink: PropTypes.bool,
+
+    /**
+     * The list of permissions to request during login.
+     * @default public_profile
+    */
+    scope: PropTypes.string,
+
+    /**
+     * Picks one of the size options for the button.
+     * @default small
+     */
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+
+    /**
+     * Determines what audience will be selected by default, when requesting write permissions.
+     * @default friends
+     */
+    defaultAudience: PropTypes.oneOf(["everyone", "friends", "only_me"]),
+
+    /**
+     * Determines the display type of the button.
+     * @default default
+     */
+    layout: PropTypes.oneOf(["default", "rounded"]),
+
+    /**
+     * Determines the type of button text.
+     * @default continue_with
+     */
+    buttonType: PropTypes.oneOf(["continue_with", "login_with"]),
+
+    /**
+     * Determines whether to show the user's profile picture when available.
+     * @default false
+     */
+    useContinueAs: PropTypes.bool,
+    
+
+
+    ////////////////
+    // Other options
+    ////////////////
+
+    /**
+     * A custom class to add to the button.
+     * @default fb-login-button
+     */
+    className: PropTypes.string,
+
+    /**
+     * The properties returned by the Facebook login callback.
      */
     facebookLoginResponse: PropTypes.object,
-    // facebookLoginResponse: PropTypes.shape({
-    //     accessToken: PropTypes.string,
-    //     data_access_expiration_time: PropTypes.number,
-    //     expiresIn: PropTypes.number,
-    //     signedRequest: PropTypes.string,
-    //     userID: PropTypes.string,
-    // }),
 };

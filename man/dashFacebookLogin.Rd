@@ -6,62 +6,75 @@
 \title{DashFacebookLogin component}
 
 \description{
-DashFacebookLogin is a wrapper around the react-facebook-login component. For details on its configuration, see https://www.npmjs.com/package/react-facebook-login
+DashFacebookLogin provides a Facebook login button. For details on its configuration, see https://developers.facebook.com/docs/facebook-login/web/login-button/
 }
 
 \usage{
-dashFacebookLogin(id=NULL, appId=NULL, size=NULL, scope=NULL, fields=NULL,
-returnScopes=NULL, autoLoad=NULL, xfbml=NULL, cookie=NULL,
-textButton=NULL, cssClass=NULL, redirectUri=NULL,
-version=NULL, icon=NULL, language=NULL, isMobile=NULL,
-isDisabled=NULL, tag=NULL, state=NULL, authType=NULL,
-responseType=NULL, facebookLoginResponse=NULL)
+dashFacebookLogin(id=NULL, appId=NULL, language=NULL, version=NULL,
+cookie=NULL, status=NULL, xfbml=NULL,
+frictionlessRequests=NULL, autoLogoutLink=NULL, scope=NULL,
+size=NULL, defaultAudience=NULL, layout=NULL,
+buttonType=NULL, useContinueAs=NULL, className=NULL,
+facebookLoginResponse=NULL)
 }
 
 \arguments{
 \item{id}{Character. The ID used to identify this component in Dash callbacks.}
 
-\item{appId}{Character. The Facebook App ID.}
+\item{appId}{Character. Your Facebook application ID. If you don't have one find it in the App dashboard
+or go there to create a new app.}
 
-\item{size}{A value equal to: "small", "medium", "metro". }
+\item{language}{Character. The language code, such as "en_US".
+@default en_US}
 
-\item{scope}{Character. }
+\item{version}{Character. Determines which versions of the Graph API and any API dialogs or
+plugins are invoked when using the .api() and .ui() functions. Valid
+values are determined by currently available versions, such as 'v2.0'.
+@default v8.0}
 
-\item{fields}{Character. }
+\item{cookie}{Logical. Determines whether a cookie is created for the session or not. If enabled,
+it can be accessed by server-side code.
+@default false}
 
-\item{returnScopes}{Logical. }
+\item{status}{Logical. Determines whether the current login status of the user is freshly retrieved
+on every page load. If this is disabled, that status will have to be manually
+retrieved using .getLoginStatus().
+@default false}
 
-\item{autoLoad}{Logical. }
+\item{xfbml}{Logical. Determines whether XFBML tags used by social plugins are parsed, and
+therefore whether the plugins are rendered or not.
+@default false}
 
-\item{xfbml}{Logical. }
+\item{frictionlessRequests}{Logical. Frictionless Requests are available to games on Facebook.com or on mobile
+web using the JavaScript SDK. This parameter determines whether they are
+enabled.
+@default false}
 
-\item{cookie}{Logical. }
+\item{autoLogoutLink}{Logical. If enabled, the button will change to a logout button when the user is logged in.
+@default false}
 
-\item{textButton}{Character. }
+\item{scope}{Character. The list of permissions to request during login.
+@default public_profile}
 
-\item{cssClass}{Character. }
+\item{size}{A value equal to: "small", "medium", "large". Picks one of the size options for the button.
+@default small}
 
-\item{redirectUri}{Character. }
+\item{defaultAudience}{A value equal to: "everyone", "friends", "only_me". Determines what audience will be selected by default, when requesting write permissions.
+@default friends}
 
-\item{version}{Character. }
+\item{layout}{A value equal to: "default", "rounded". Determines the display type of the button.
+@default default}
 
-\item{icon}{Character. }
+\item{buttonType}{A value equal to: "continue_with", "login_with". Determines the type of button text.
+@default continue_with}
 
-\item{language}{Character. }
+\item{useContinueAs}{Logical. Determines whether to show the user's profile picture when available.
+@default false}
 
-\item{isMobile}{Logical. }
+\item{className}{Character. A custom class to add to the button.
+@default fb-login-button}
 
-\item{isDisabled}{Logical. }
-
-\item{tag}{Character. }
-
-\item{state}{Character. }
-
-\item{authType}{Character. }
-
-\item{responseType}{Character. }
-
-\item{facebookLoginResponse}{Named list. The properties returned by the Facebook login callback}
+\item{facebookLoginResponse}{Named list. The properties returned by the Facebook login callback.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

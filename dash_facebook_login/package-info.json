@@ -24,8 +24,7 @@
   "author": "Miklos Danka <danka.miklos@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "ramda": "^0.26.1",
-    "react-facebook-login": "^4.1.1"
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
